@@ -38,6 +38,8 @@ DallasTemperature sensors(&oneWire);
 #define SAMPLE_INTERVAL 10000 // 10 second in milliseconds
 
 // MQTT Configuration
+#define MQTT_TOPIC_STATUS "esp32/status"
+#define MQTT_TOPIC_TEMPERATURE "sensor3/temp"
 
 // MQTT Broker settings - replace with your broker details
 #define MQTT_PORT 1883
@@ -91,13 +93,12 @@ void mqttCallback(char* topic, byte* payload, unsigned int length)
 //
 bool connectToWiFi()
 {
-    // Init Serial port
-    Serial.begin(115200);
     // Init WiFI
 	WiFi.enableAP(false);
     WiFi.mode(WIFI_STA);
-    // WiFi connect
+    // Reduce power for supermini antenna reflection
     WiFi.setTxPower(WIFI_POWER_8_5dBm);
+    // WiFi connect
     WiFi.begin(ssid, password);
     // reduce power for supermini antenna problem
     // wait 10 S before reboot
