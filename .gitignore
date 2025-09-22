@@ -1,4 +1,6 @@
 .pio/
 .vscode/
 src/config.h
+QWEN.md
+GEMINI.md
 

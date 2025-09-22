@@ -8,21 +8,20 @@
 // - 4.7k pull-up resistor recommended between data and VCC
 //
 // Features:
-// - Continuous temperature sampling every 1 second
+// - Continuous temperature sampling every 10 second
 // - Serial output for monitoring and debugging
 // - MQTT publishing of current temperature
 
-#include <Arduino.h>
-#include <DallasTemperature.h>
-#include <OneWire.h>
-#include <PubSubClient.h>
-#include <WiFi.h>
+#include <Arduino.h> // Core Arduino framework functions
+#include <OneWire.h> // Library for 1-Wire communication protocol
+#include <DallasTemperature.h> // Library for DS18B20 temperature sensor
+#include <PubSubClient.h> // Library for MQTT communication
+#include <WiFi.h> // Library for WiFi connectivity
 
-#include "config.h"
+#include "config.h" // WiFi and MQTT credentials
 
 // OneWire bus pin configuration
-// The DS18B20 sensor's data pin is connected to GPIO0
-// Note: GPIO0 is also used for boot mode, so external pull-up resistor is required
+// The DS18B20 sensor's data pin is connected to GPIO1
 #define ONE_WIRE_BUS 1
 
 // OneWire instance for communication with DS18B20 sensor
@@ -34,7 +33,7 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
 // Time interval between temperature samples in milliseconds
-// 1000ms = 1 second sampling rate
+// 10000ms = 10 second sampling rate
 #define SAMPLE_INTERVAL 10000 // 10 second in milliseconds
 
 // MQTT Configuration
@@ -87,9 +86,7 @@ void mqttCallback(char* topic, byte* payload, unsigned int length)
 
 //
 // Connect to WiFi network
-// Returns true if connection is successful, false otherwise
-//
-// connect to WIFI
+// Returns true if connection is successful, retry otherwise
 //
 bool connectToWiFi()
 {
@@ -167,8 +164,8 @@ void publishTemperatureData(float currentTemp)
     mqttClient.publish(MQTT_TOPIC_TEMPERATURE, payload);
 
     // Log published temperature
-    Serial.print("Published to MQTT - Current: ");
-    Serial.print(currentTemp);
+    Serial.print("Published to MQTT: ");
+    Serial.print(payload);
     Serial.println(" C");
 }
 

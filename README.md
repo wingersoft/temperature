@@ -15,7 +15,7 @@ This project is an **Arduino ESP32** application developed using the **PlatformI
 
 ## Hardware Setup
 
-- ESP32-C3 DevKitM-1
+- ESP32-C3 DevKitM-1 (supermini)
 - DS18B20 temperature sensor
 - 4.7kΩ pull-up resistor between VCC and DATA line of the DS18B20 sensor
 - Connect the DS18B20 sensor's DATA pin to GPIO0 of the ESP32-C3
